@@ -22,7 +22,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Check Library Version Matches Ref
+      - name: Check Library Version Matches ${{ github.ref_name }}
         run: |
           version=`grep -o "v\d.\d.\d" learnosity_sdk/_version.py`
           if [ "$version" != "${{ github.ref_name }}" ]; then
