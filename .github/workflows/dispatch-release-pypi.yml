@@ -26,7 +26,7 @@ jobs:
         run: |
           version=`grep -o "v\d.\d.\d" learnosity_sdk/_version.py`
           if [ "$version" != "${{ github.ref_name }}" ]; then
-            echo "::error::$version doesn't match ${{ github.ref_name }}" && exit 1
+            echo "::error::Library version $version doesn't match ${{ github.ref_name }}" && exit 1
           fi
 
       # - name: Set up Python
