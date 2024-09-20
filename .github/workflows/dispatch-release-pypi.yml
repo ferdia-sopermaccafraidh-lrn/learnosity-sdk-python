@@ -6,6 +6,7 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+  push:
 
 permissions:
   contents: read
@@ -21,20 +22,28 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install dependencies
+      - name: Check Library Version Matches Ref
         run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
+          version=`grep -o "v\d.\d.\d" learnosity_sdk/_version.py`
+          if [ "$version" != "${{ github.ref_name }}" ]; then
+            echo "$version doesn't match ${{ github.ref_name }}"
+            exit 1
+          fi
 
-      - name: Build and check Python distributions
-        run: |
-          python setup.py sdist bdist_wheel
-          twine check dist/*
+      # - name: Set up Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.x'
 
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      # - name: Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install setuptools wheel twine
+
+      # - name: Build and check Python distributions
+      #   run: |
+      #     python setup.py sdist bdist_wheel
+      #     twine check dist/*
+
+      # - name: Publish package distributions to PyPI 
+      #   uses: pypa/gh-action-pypi-publish@release/v1
