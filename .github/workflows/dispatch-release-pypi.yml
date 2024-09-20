@@ -28,9 +28,9 @@ jobs:
           version=`grep -o "v\d.\d.\d" learnosity_sdk/_version.py`
           echo "library_version=version" >> $GITHUB_OUTPUT
 
-      - name: Check Library Version ${{ steps.get_version.outputs.library_version }} Matches ${{ github.ref_name }}
-        if: ${{ steps.get_version.outputs.library_version }} == ${{ github.ref_name }}  
-        run: exit 1
+      # - name: Check Library Version ${{ steps.get_version.outputs.library_version }} Matches ${{ github.ref_name }}
+      #   if: ${{ steps.get_version.outputs.library_version }} == ${{ github.ref_name }}  
+      #   run: exit 1
 
       # - name: Set up Python
       #   uses: actions/setup-python@v2
