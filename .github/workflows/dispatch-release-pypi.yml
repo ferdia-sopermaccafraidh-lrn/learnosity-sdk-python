@@ -22,12 +22,15 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Check Library Version Matches ${{ github.ref_name }}
+      - name: Get Library Version
+        id: get_version
         run: |
           version=`grep -o "v\d.\d.\d" learnosity_sdk/_version.py`
-          if [ "$version" != "${{ github.ref_name }}" ]; then
-            echo "::error::Library version $version doesn't match ${{ github.ref_name }}" && exit 1
-          fi
+          echo "library_version=version" >> $GITHUB_OUTPUT
+
+      - name: Check Library Version ${{ steps.get_version.outputs.library_version }} Matches ${{ github.ref_name }}
+        if: ${{ steps.get_version.outputs.library_version }} == ${{ github.ref_name }}  
+        run: exit 1
 
       # - name: Set up Python
       #   uses: actions/setup-python@v2
